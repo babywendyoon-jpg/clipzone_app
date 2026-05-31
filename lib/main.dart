@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'pages/auth/login_page.dart';
 import 'pages/auth/register_page.dart';
-import 'pages/home/home_page.dart';
+import 'pages/main_navigation.dart';
+import 'routes/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,14 +15,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'ClipZone',
       debugShowCheckedModeBanner: false,
 
-      initialRoute: '/login',
+      initialRoute: AppRoutes.login,
 
       routes: {
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-        '/home': (context) => const HomePage(),
+        AppRoutes.login: (context) => const LoginPage(),
+        AppRoutes.register: (context) => const RegisterPage(),
+
+        // Setelah login masuk ke Bottom Navigation
+        AppRoutes.home: (context) => const MainNavigation(),
       },
     );
   }
