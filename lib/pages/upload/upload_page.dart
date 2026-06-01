@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 
-class UploadPage extends StatelessWidget {
+class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
+
+  @override
+  State<UploadPage> createState() => _UploadPageState();
+}
+
+class _UploadPageState extends State<UploadPage> {
+  String selectedCategory = "Entertainment";
+
+  final List<String> categories = [
+    "Entertainment",
+    "Gaming",
+    "Education",
+    "Technology",
+    "Music",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +24,8 @@ class UploadPage extends StatelessWidget {
       backgroundColor: Colors.black,
 
       appBar: AppBar(
-        title: const Text('Upload Video'),
+        title: const Text("Upload Video"),
+        centerTitle: true,
         backgroundColor: Colors.red,
       ),
 
@@ -20,7 +36,7 @@ class UploadPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Create New Content',
+              "Create New Video",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 26,
@@ -31,33 +47,45 @@ class UploadPage extends StatelessWidget {
             const SizedBox(height: 8),
 
             const Text(
-              'Upload your short video and share it with everyone.',
+              "Share your creativity with the ClipZone community.",
               style: TextStyle(color: Colors.white70),
             ),
 
             const SizedBox(height: 25),
 
+            // VIDEO PREVIEW
             Container(
-              height: 240,
+              height: 250,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.grey.shade900,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.white24),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.video_collection, size: 80, color: Colors.red),
-                  SizedBox(height: 10),
-                  Text(
-                    'Video Preview',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(
+                    Icons.video_collection,
+                    size: 90,
+                    color: Colors.grey.shade700,
                   ),
-                  SizedBox(height: 5),
-                  Text(
-                    'No video selected',
-                    style: TextStyle(color: Colors.white54),
+
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+
+                    child: const Text(
+                      "No Video Selected",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -68,10 +96,14 @@ class UploadPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               height: 55,
+
               child: ElevatedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.upload_file),
-                label: const Text('Choose Video'),
+
+                icon: const Icon(Icons.folder_open),
+
+                label: const Text("Choose Video"),
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -83,12 +115,16 @@ class UploadPage extends StatelessWidget {
 
             TextField(
               style: const TextStyle(color: Colors.white),
+
               decoration: InputDecoration(
-                labelText: 'Video Title',
+                labelText: "Video Title",
                 labelStyle: const TextStyle(color: Colors.white70),
+
                 prefixIcon: const Icon(Icons.title, color: Colors.white70),
+
                 filled: true,
                 fillColor: Colors.grey.shade900,
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -100,18 +136,64 @@ class UploadPage extends StatelessWidget {
             TextField(
               maxLines: 4,
               style: const TextStyle(color: Colors.white),
+
               decoration: InputDecoration(
-                labelText: 'Description',
+                labelText: "Description",
                 labelStyle: const TextStyle(color: Colors.white70),
+
                 filled: true,
                 fillColor: Colors.grey.shade900,
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
             ),
 
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
+
+            const Text(
+              "Category",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade900,
+                borderRadius: BorderRadius.circular(15),
+              ),
+
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  dropdownColor: Colors.grey.shade900,
+                  value: selectedCategory,
+                  isExpanded: true,
+
+                  style: const TextStyle(color: Colors.white),
+
+                  items: categories.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value!;
+                    });
+                  },
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 25),
 
             Container(
               padding: const EdgeInsets.all(15),
@@ -119,29 +201,56 @@ class UploadPage extends StatelessWidget {
                 color: Colors.grey.shade900,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: const Row(
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.public, color: Colors.green),
-                  SizedBox(width: 10),
-                  Text('Public Video', style: TextStyle(color: Colors.white)),
+                  const Text(
+                    "Upload Progress",
+                    style: TextStyle(color: Colors.white),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  LinearProgressIndicator(
+                    value: 0.0,
+                    backgroundColor: Colors.grey,
+                    color: Colors.red,
+                    minHeight: 8,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  const Text("0%", style: TextStyle(color: Colors.white70)),
                 ],
               ),
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
 
             SizedBox(
               width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
+              height: 60,
+
+              child: ElevatedButton.icon(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: const Text(
-                  'Upload Video',
-                  style: TextStyle(color: Colors.white, fontSize: 17),
+
+                icon: const Icon(Icons.cloud_upload),
+
+                label: const Text(
+                  "Publish Video",
+                  style: TextStyle(fontSize: 17),
+                ),
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
                 ),
               ),
             ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),
